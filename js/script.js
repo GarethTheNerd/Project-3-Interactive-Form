@@ -213,9 +213,9 @@ cvvField.addEventListener("input", () => {validateCvvCode("error"); checkSubmitB
 //Validation funtions
 const validateName = (mode) => {
     const nameEntered = nameField.value;
-    const nameRegEx = /^\w{1,100}\s?\w{1,100}?$/;
+    const nameRegEx = /^\w{1,100}\s?\w{1,100}?$/; //Define the RegEx to decide if the name is valid
 
-    if (mode === "test") {
+    if (mode === "test") { //if mode is set to test we return true or false based on the critera. This is used to enable or disabling the submit button
         if (nameRegEx.test(nameEntered)) {
             return true;
         } else {
@@ -223,12 +223,13 @@ const validateName = (mode) => {
     }
 }
 
-    if (mode === "error") {
+    if (mode === "error") { //Mode error is used when this input has been changed to provide an error
         if (nameRegEx.test(nameEntered)) {
-        //We will undo the failed styling
+        //We will undo the failed styling as it passed
             nameErrorSpan.textContent = ''
             nameField.style.border = '2px solid rgb(111, 157, 220)';
         } else {
+            //Lets add a border and an error to show there is a problem
             nameErrorSpan.textContent = 'Please provide your name';
             nameField.style.border = '2px solid red';
         }
@@ -237,9 +238,9 @@ const validateName = (mode) => {
 
 const validateEmail = (mode) => {
     const emailEntered = emailField.value;    
-    const emailRegEx = /^[-a-zA-Z0-9_.]+@[-a-zA-Z0-9_.]+[.][a-zA-Z0-9-]+$/;
+    const emailRegEx = /^[-a-zA-Z0-9_.]+@[-a-zA-Z0-9_.]+[.][a-zA-Z0-9-]+$/; //Define the RegEx to decide if the email is valid
 
-    if (mode === "test") {
+    if (mode === "test") { //if mode is set to test we return true or false based on the critera. This is used to enable or disabling the submit button
         if (emailRegEx.test(emailEntered)) {
             return true;
         } else {
@@ -247,22 +248,23 @@ const validateEmail = (mode) => {
     }
 }
 
-    if (mode === "error") {
+    if (mode === "error") { //Mode error is used when this input has been changed to provide an error
         if (emailRegEx.test(emailEntered)) {
-        //We will undo the failed styling
+        //We will undo the failed styling as the test passed
             emailField.style.border = '2px solid rgb(111, 157, 220)';
             emailErrorSpan.textContent = '';
         } else {
-            if (emailEntered === "") {
+            if (emailEntered === "") { //here we check if the error is blank to provide a dfferent error
                 emailErrorSpan.textContent = "Email cannot be blank.";
             } else {
-                emailErrorSpan.textContent = "Please provide a valid email address";
+                emailErrorSpan.textContent = "Please provide a valid email address"; //The email exists but isn't valid so we provide a different error
             }
-            emailField.style.border = '2px solid red';
+            emailField.style.border = '2px solid red'; //We add this border regardless of what the error was
         }
     }
 }
 
+//The following validate functions work in the same way as the previous one's but just check that all digits are entered and are the right length
 const validateCcNum = (mode) => {
     const ccNumEntered = ccNumField.value;    
     const ccNumRegEx = /^\d{13,16}$/;
@@ -332,16 +334,17 @@ const validateCvvCode = (mode) => {
 const validateActivities = (mode) => {
     
     let anyTicked = false;
-    for(let i = 0; i < activityCheckboxes.length; i++) {
+    for(let i = 0; i < activityCheckboxes.length; i++) { //We are looping through all the checkboxes so we can check if any are checked
         const currentCheckbox = activityCheckboxes[i];
 
         if(currentCheckbox.checked) {
-            anyTicked = true;
+            anyTicked = true; //one of the boxes is ticked so we can set anyChecked to true
+            break; //Break out of the loop as it is pointless continuing
         }
     
     }
 
-    if(mode === "test") {
+    if(mode === "test") { //the mode is test so we can just return anyTicked
         return anyTicked;
     }
 
@@ -363,8 +366,8 @@ const validateActivities = (mode) => {
 
 }
 
-const checkSubmitButton = () => {
-    if(paymentMethodField.value === "credit card") {
+const checkSubmitButton = () => { //This function checks all the validation and either enables or disables the submit button
+    if(paymentMethodField.value === "credit card") { //We are checking if credit card is set as we need to check the card fields too
         if(validateName("test") && validateEmail("test") && validateActivities("test") && validateCcNum("test") && validateZipCode("test") && validateCvvCode("test")) {
             //All of the fields including the credit card number fields are valid
             submitButton.disabled = '';
@@ -372,7 +375,7 @@ const checkSubmitButton = () => {
             submitButton.disabled = 'true';
         }
     } else {
-        if(validateName("test") && validateEmail("test") && validateActivities("test")) {
+        if(validateName("test") && validateEmail("test") && validateActivities("test")) { //As credit card isn't selected, we can just check the other fields
             //All of the fields excluding the credit card number fields are valid
             submitButton.disabled = '';
         } else {
