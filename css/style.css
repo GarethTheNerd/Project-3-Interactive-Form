@@ -222,3 +222,7 @@ option {
 		clear: both;
 	}
 }
+span.error {
+	color: red;
+	font-weight: bold;
+}
